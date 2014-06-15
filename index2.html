@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="src/jquery.min.js"></script>
+    <script src="src/script.js">    </script>
+    <script src="src/chisquare.js"></script>
+</head>
+    
+<body>
+
+        <textarea id="links" name="upload" cols=15 rows=20>
+21
+22
+19
+26
+27
+18
+22
+34
+17
+24
+31
+31</textarea>
+    <textarea id="links2" name="upload" cols=15 rows=20>
+21
+19
+26
+27
+18
+22
+34
+17
+24
+31
+31</textarea>
+    <form>
+    Probability <input type="text" name="tail_prob" size="10" value="0.95">
+    <input type="button" id="getsize" name="getsize" value="Go" onclick= "compute(this.form)" />
+    
+    </form>
+    Median Gabungan<div id="med"></div>
+    Chi Square<div id="chiSqr"></div>
+    Chi Square Tabel<div id="chiSqrTbl"></div>
+    Keputusan<div id="conclusion"></div>
+    
+    <script>
+     function compute(form){
+          
+            var dataA = arrayA();
+            var dataB = arrayB();
+             dataA=dataA.filter(function(e){return e});
+             dataB=dataB.filter(function(e){return e});
+            var dataGab = dataA.concat(dataB);
+            dataGab = dataGab.filter(function(e){return e});
+            var med = median(dataGab);
+            
+            var a;
+            var b;
+            var c;
+            var d;
+            
+            if(isNaN(dataA[0])){
+                a = oneOne(dataA, dataA[0]);
+                b = oneOne(dataB, dataA[0]);
+                c = zeroOne(dataA, dataA[0]);
+                d = zeroOne(dataB, dataA[0]);
+            } if (!isNaN(dataA[0])){
+                a = lebihDari(dataA, med);
+                b = lebihDari(dataB, med);
+                c = kurangDari(dataA, med);
+                d = kurangDari(dataB, med);  
+            }
+
+            var chiSqr = computeChiSqr(a,b,c,d);
+            
+            var chiinv = chisqcalc(form);
+            
+            if(chiSqr > chiinv){
+                document.getElementById("conclusion").innerHTML="Tolak H0";
+            }if (chiSqr < chiinv){
+                document.getElementById("conclusion").innerHTML="Gagal Tolak H0";
+            }
+            
+            document.getElementById("chiSqrTbl").innerHTML=chiinv;
+            document.getElementById("med").innerHTML=med;
+            document.getElementById("chiSqr").innerHTML=chiSqr;
+        }
+
+    </script>
+
+</body>
+</html>

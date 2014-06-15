@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <title>Median Test App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="Median Test App" />
+        <meta name="keywords" content="uji median, non parametrik, median test, non parametric" />
+        <meta name="author" content="dylusiya" />
+        <link rel="shortcut icon" href="../favicon.ico"> 
+
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="src/button.css" />
+	
+
+        <link rel="stylesheet" type="text/css" href="src/VerticalIconMenu/css/default.css" />
+		<link rel="stylesheet" type="text/css" href="src/VerticalIconMenu/css/component.css" />
+
+        <link rel="stylesheet" media="screen" href="dist/jquery.handsontable.full.css">
+
+
+        <script src="src/jquery.min.js"></script>
+   	 	<script src="dist/jquery.handsontable.full.js"></script>
+		<!--[if lte IE 8]>
+			 <link rel="stylesheet" type="text/css" href="css/simple.css" />
+		<![endif]-->
+    </head>
+    <body>
+        <div class="container">
+	
+        	<!-- Home -->
+			<div id="home" class="panel">
+
+
+				<div class="content">
+
+					<h2>Median Test App</h2>
+					<p>Uji median digunakan untuk menguji apakah dua atau lebih kelompok (sampel)  independen berbeda dalam nilai tengahnya, dengan kata lain apakah dua atau lebih sampel independen berasal dari suatu populasi yang mempunyai median yang sama atau berasal dari populasi yang sama.</p>
+					<h3>Hipotesis</h3>
+					<p>H<sub>0</sub>: kedua sampel berasal dari populasi-populasi bermedian sama.</p>
+					<p>H<sub>1</sub>: median kedua populasi berbeda.
+					</p>					
+				</div>
+
+				<div class="content1">
+					<h3> <span class="hide"> a <span> </h3>
+					<h3>Masukkan data:</h3>
+					<div id="dataTable" class="hands" ></div>
+					<form>
+						<br />
+						<label for="tail_prob">Tingkat kepercayaan: </label>
+					    <input type="text" name="tail_prob" size="10" value="0.95">
+					    <br /><br />
+					    <input id="normal" name="normal" type="checkbox">
+					    <label for="normal">Pendekatan Normal</label><br />
+					    <input type="button" id="getsize" name="getsize" value="Jalankan Uji" onclick= "compute(this.form)" />
+					</form>
+				</div>
+
+			</div>
+			<!-- /Home -->
+
+
+			<div id="hasil" class="panel">
+				<div class="content">
+
+					<h2>Tabel</h2>
+					<table class="notabel">
+						<tbody>
+							<tr>
+								<th>Median</th>
+								<td id="med"> - </td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="tabel">
+						<thead>
+							<tr>
+							  <th>Sampel </th>
+							  <th>A</th> 
+							  <th>B</th>
+							  <th>Jumlah</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+							  <td id="grtMed">> Median</td>
+							  <td id="a"></td> 
+							  <td id="b"></td>
+							  <td id="ab"></td>
+							</tr>
+							<tr>
+							  <td id="lsMed">< Median</td>
+							  <td id="c"></td> 
+							  <td id="d"></td>
+							  <td id="cd"></td>
+							</tr>
+							<tr>
+							  <td>Jumlah</td>
+							  <td id="ac"></td> 
+							  <td id="bd"></td>
+							  <td id="abcd"></td>
+							</tr>
+						</tbody>
+						
+					</table>
+					
+				</div>
+
+				<div class="content1">
+					<h2>Statistik Uji Chi Square</h2>
+					<table class="notabel">
+						<tbody>
+							<tr>
+								<th>Chi Square Tabel (df = 1)</th>
+								<td id="chiSqrTbl"> - </td>
+							</tr>
+							<tr>
+								<th>Chi Square Hitung</th>
+								<td id="chiSqr"> - </td>
+							</tr>
+							<tr>
+								<th>Keputusan</th>
+								<td id="conclusion"> - </td>
+							</tr>
+						</tbody>
+					</table>				
+				</div>
+			</div>
+			<!-- /Portfolio -->
+
+			
+			<!-- Portfolio -->
+			<div id="hasilNormal" class="panel">
+				<div class="content">
+
+					<h2>Tabel</h2>
+					<table class="notabel">
+						<tbody>
+							<tr>
+								<th>Median</th>
+								<td id="med1"> - </td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="tabel">
+						<thead>
+							<tr>
+							  <th>Sampel </th>
+							  <th>A</th> 
+							  <th>B</th>
+							  <th>Jumlah</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+							  <td id="grtMed1">> Median</td>
+							  <td id="a1"></td> 
+							  <td id="b1"></td>
+							  <td id="ab1"></td>
+							</tr>
+							<tr>
+							  <td id="lsMed1">< Median</td>
+							  <td id="c1"></td> 
+							  <td id="d1"></td>
+							  <td id="cd1"></td>
+							</tr>
+							<tr>
+							  <td>Jumlah</td>
+							  <td id="ac1"></td> 
+							  <td id="bd1"></td>
+							  <td id="abcd1"></td>
+							</tr>
+						</tbody>
+						
+					</table>
+					
+				</div>
+
+				<div class="content1">
+					<h2>Statistik Uji</h2>
+					<h3>Dengan Pendekatan Normal</h3>
+					<table class="notabel">
+						<tbody>
+							<tr>
+								<th>Z Tabel</th>
+								<td id="zTbl"> - </td>
+							</tr>
+							<tr>
+								<th>T Hitung</th>
+								<td id="t"> - </td>
+							</tr>
+							<tr>
+								<th>Keputusan</th>
+								<td id="conclusionNormal"> - </td>
+							</tr>
+						</tbody>
+					</table>				
+				</div>
+			</div>
+			<!-- /Portfolio -->			
+			<!-- About -->
+			<div id="about" class="panel">
+				<div class="content">
+					<h2>About</h2>
+					<p>Aplikasi Uji Median Statistik Non Parametrik</p>
+					<p>Credits: Jquery, Handsontable, Gary Perlman's: statistics code for cChi Square and z-score,
+						Codrops' sidebar menu
+					</p>
+				</div>
+			</div>
+			<!-- /About -->
+
+        	<div id="header">
+				<ul class="cbp-vimenu">
+						<li id="bla1"><a href="#home" class="icon-logo">Logo</a></li>
+						<li id="bla2"><a href="#hasil" class="icon-table">Chi Square</a></li>
+						<li id="bla3"><a href="#hasilNormal" class="icon-chart">Normal</a></li>
+						<li><a href="#about" class="icon-about">About </a></li>
+						<!-- Example for active item:
+						<li class="cbp-vicurrent"><a href="#" class="icon-pencil">Pencil</a></li>
+						-->
+				</ul>	
+			</div>        
+			
+        </div>
+
+		<script>
+
+			$(document).ready(function(){
+			    $('#header ul li').click(function() {
+			        $(this).siblings('li').removeClass('cbp-vicurrent');
+			        $(this).addClass('cbp-vicurrent');
+			    });
+			});
+
+	        var data = [
+	            [21,23],
+	            [30,21],
+	            [12,45],
+	            [13,44],
+	            [21,23],
+	            [30,21],
+	            [12,45],
+	            [13,44],
+	            [21,23],
+	            [30,21],
+	            [12,45],
+	            [13,44],
+	            [21,23],
+	            [30,21],
+	            [12,45],
+	            [" "," "],
+	            [" "," "]
+	        ];    
+
+	      var $container = $("#dataTable");
+	        $container.handsontable({
+	        data: data,
+	        startRows: 16,
+	        startCols: 2,
+	        minSpareRows: 1,
+	        colWidths: [200, 190], 
+	        rowHeaders: true,
+	        colHeaders: true,
+	      });
+
+
+
+	        
+
+	         function compute(form){
+	          
+	            var hot = $container.handsontable('getInstance');
+	            var dataA = hot.getDataAtCol(0);
+	             dataA=dataA.filter(function(e){return e});
+	            var dataB = hot.getDataAtCol(1);
+	             dataB=dataB.filter(function(e){return e});
+	            var dataGab = dataA.concat(dataB);
+	            var med = Math.median.apply(Math,dataGab);
+	            
+	            var a;
+	            var b;
+	            var c;
+	            var d;
+	            
+	            if(isNaN(dataA[0])){
+	                a = oneOne(dataA, dataA[0]);
+	                b = oneOne(dataB, dataA[0]);
+	                c = zeroOne(dataA, dataA[0]);
+	                d = zeroOne(dataB, dataA[0]);
+	                document.getElementById("grtMed").innerHTML=dataA[0];
+	                document.getElementById("grtMed1").innerHTML=dataA[0];
+	                document.getElementById("lsMed").innerHTML="!"+dataA[0];
+	                document.getElementById("lsMed1").innerHTML="!"+dataA[0];
+
+	                document.getElementById("med").innerHTML="-";
+		            document.getElementById("med1").innerHTML="-";
+
+	            } if (!isNaN(dataA[0])){
+	                a = lebihDari(dataA, med);
+	                b = lebihDari(dataB, med);
+	                c = kurangDari(dataA, med);
+	                d = kurangDari(dataB, med);
+	                document.getElementById("grtMed").innerHTML="> Median";
+	                document.getElementById("grtMed1").innerHTML="> Median";
+	                document.getElementById("lsMed").innerHTML="< Median";
+	                document.getElementById("lsMed1").innerHTML="< Median";
+
+		            document.getElementById("med").innerHTML=med;
+		            document.getElementById("med1").innerHTML=med;   
+	            }
+
+
+
+	            if (document.getElementById('normal').checked) {
+	            	var te = computeNormal(a,b,c,d);
+	            	var z = calc_q(form);
+
+	            	if(te >= z || te <= (z*(-1))){
+		                document.getElementById("conclusionNormal").innerHTML="Tolak H0";
+		            }else{
+		                document.getElementById("conclusionNormal").innerHTML="Gagal Tolak H0";
+		            }
+		            document.getElementById("a1").innerHTML=a;
+		            document.getElementById("b1").innerHTML=b;
+		            document.getElementById("c1").innerHTML=c;
+		            document.getElementById("d1").innerHTML=d;
+
+					var ab = a+b;
+		            var cd = c+d;
+		            var ac = a+c;
+		            var bd = b+d;
+		            var n =a+b+c+d;
+		            document.getElementById("ab1").innerHTML=ab;
+		            document.getElementById("cd1").innerHTML=cd;
+		            document.getElementById("ac1").innerHTML=ac;
+		            document.getElementById("bd1").innerHTML=bd;
+		            document.getElementById("abcd1").innerHTML=n;
+		            
+		            document.getElementById("zTbl").innerHTML=z;
+		            document.getElementById("t").innerHTML=te;
+		            window.location.hash = "hasilNormal";
+        		}
+        		else{
+		            var chiSqr = computeChiSqr(a,b,c,d);
+		            
+		            var chiinv = chisqcalc(form);
+		            
+		            if(chiSqr >= chiinv){
+		                document.getElementById("conclusion").innerHTML="Tolak H0";
+		            }if (chiSqr < chiinv){
+		                document.getElementById("conclusion").innerHTML="Gagal Tolak H0";
+		            }
+			        document.getElementById("a").innerHTML=a;
+		            document.getElementById("b").innerHTML=b;
+		            document.getElementById("c").innerHTML=c;
+		            document.getElementById("d").innerHTML=d;
+		            var ab = a+b;
+		            var cd = c+d;
+		            var ac = a+c;
+		            var bd = b+d;
+		            var n =a+b+c+d;
+		            document.getElementById("ab").innerHTML=ab;
+		            document.getElementById("cd").innerHTML=cd;
+		            document.getElementById("ac").innerHTML=ac;
+		            document.getElementById("bd").innerHTML=bd;
+		            document.getElementById("abcd").innerHTML=n;
+		            
+		            document.getElementById("chiSqrTbl").innerHTML=chiinv;
+		            document.getElementById("chiSqr").innerHTML=chiSqr;
+		            window.location.hash = "hasil";       			
+        		}
+
+
+	        }
+
+	    </script>
+
+    	<script src="src/script.js">    </script>
+   	 	<script src="src/chisquare.js"></script>
+   	 	<script src="src/z-score.js"></script>
+
+		<script src="src/VerticalIconMenu/js/modernizr.custom.js"></script>
+	</body>
+</html>

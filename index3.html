@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="src/jquery.min.js"></script>
+    <script src="src/script.js">    </script>
+    <script src="src/chisquare.js"></script>
+    <script src="dist/jquery.handsontable.full.js"></script>
+    <link rel="stylesheet" media="screen" href="dist/jquery.handsontable.full.css">
+</head>
+    
+<body>
+    
+<div id="dataTable" style="height: 400px; width: 450px; overflow: scroll" ></div>    
+    <form>
+    Tentukan 1-Alfa <input type="text" name="tail_prob" size="10" value="0.95">
+    <input type="button" id="getsize" name="getsize" value="Go" onclick= "compute(this.form)" />    
+    </form>
+    
+    Median Gabungan<div id="med"></div>
+    Chi Square<div id="chiSqr"></div>
+    Chi Square Tabel (df = 1)<div id="chiSqrTbl"></div>
+    Keputusan<div id="conclusion"></div>
+    
+<script>
+        var data = [
+            [21,23],
+            [30,21],
+            [12,45],
+            [13,44],
+            [21,23],
+            [30,21],
+            [12,45],
+            [13,44],
+            [21,23],
+            [30,21],
+            [12,45],
+            [13,44],
+            [21,23],
+            [30,21],
+            [12,45],
+            [13,44],
+        ];    
+
+      var $container = $("#dataTable");
+        $container.handsontable({
+        data: data,
+        startRows: 16,
+        startCols: 2,
+        minSpareRows: 1,
+        colWidths: [200, 190], 
+        rowHeaders: true,
+        colHeaders: true,
+      });
+        
+
+         function compute(form){
+          
+            var hot = $container.handsontable('getInstance');
+            var dataA = hot.getDataAtCol(0);
+             dataA=dataA.filter(function(e){return e});
+            var dataB = hot.getDataAtCol(1);
+             dataB=dataB.filter(function(e){return e});
+            var dataGab = dataA.concat(dataB);
+            var med = median(dataGab);
+            
+            var a;
+            var b;
+            var c;
+            var d;
+            
+            if(isNaN(dataA[0])){
+                a = oneOne(dataA, dataA[0]);
+                b = oneOne(dataB, dataA[0]);
+                c = zeroOne(dataA, dataA[0]);
+                d = zeroOne(dataB, dataA[0]);
+            } if (!isNaN(dataA[0])){
+                a = lebihDari(dataA, med);
+                b = lebihDari(dataB, med);
+                c = kurangDari(dataA, med);
+                d = kurangDari(dataB, med);  
+            }
+
+            var chiSqr = computeChiSqr(a,b,c,d);
+            
+            var chiinv = chisqcalc(form);
+            
+            if(chiSqr > chiinv){
+                document.getElementById("conclusion").innerHTML="Tolak H0";
+            }if (chiSqr < chiinv){
+                document.getElementById("conclusion").innerHTML="Gagal Tolak H0";
+            }
+            
+            document.getElementById("chiSqrTbl").innerHTML=chiinv;
+            document.getElementById("med").innerHTML=med;
+            document.getElementById("chiSqr").innerHTML=chiSqr;
+        }
+
+    </script>
+    
+</body>
+    
+    
+</html>
