@@ -13,7 +13,7 @@
 }
 
 body, html { font-size: 100%; 	padding: 0; margin: 0; 	
-	overflow-y: hidden; overflow-x:auto;}
+	overflow-y: hidden; }
 
 /* Reset */
 *,
