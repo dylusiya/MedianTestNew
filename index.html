@@ -16,12 +16,15 @@
 
         <link rel="stylesheet" type="text/css" href="src/VerticalIconMenu/css/default.css" />
 		<link rel="stylesheet" type="text/css" href="src/VerticalIconMenu/css/component.css" />
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
         <link rel="stylesheet" media="screen" href="dist/jquery.handsontable.full.css">
 
 
         <script src="src/jquery.min.js"></script>
    	 	<script src="dist/jquery.handsontable.full.js"></script>
+   	 	<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="http://code.highcharts.com/modules/exporting.js"></script>
 		<!--[if lte IE 8]>
 			 <link rel="stylesheet" type="text/css" href="css/simple.css" />
 		<![endif]-->
@@ -107,10 +110,10 @@
 						</tbody>
 						
 					</table>
-					
 				</div>
 
 				<div class="content1">
+					<br />
 					<h2>Statistik Uji Chi Square</h2>
 					<table class="notabel">
 						<tbody>
@@ -183,6 +186,7 @@
 				</div>
 
 				<div class="content1">
+					<br />
 					<h2>Statistik Uji</h2>
 					<h3>Dengan Pendekatan Normal</h3>
 					<table class="notabel">
@@ -203,7 +207,18 @@
 					</table>				
 				</div>
 			</div>
-			<!-- /Portfolio -->			
+			<!-- /Portfolio -->
+			<div id="descriptive" class="panel">
+				<div class="content">
+					<h2>Deskriptif</h2>
+					<div id="containerChart" style="top: 100px;height:400px; width: 400px; z-index:1000"></div>
+				</div>
+				<div class="content1">
+					<div id="containerChart1" style="min-height:400px; width: 400px; z-index:1000"></div>
+				</div>
+				<br />
+				<br />
+			</div>			
 			<!-- About -->
 			<div id="about" class="panel">
 				<div class="content">
@@ -218,10 +233,11 @@
 
         	<div id="header">
 				<ul class="cbp-vimenu">
-						<li id="bla1"><a href="#home" class="icon-logo">Logo</a></li>
-						<li id="bla2"><a href="#hasil" class="icon-table">Chi Square</a></li>
-						<li id="bla3"><a href="#hasilNormal" class="icon-chart">Normal</a></li>
-						<li><a href="#about" class="icon-about">About </a></li>
+						<li id="bla1"><a href="#home" class="fa fa-home">Logo</a></li>
+						<li id="bla2"><a href="#hasil" class="fa fa-table">Chi Square</a></li>
+						<li id="bla3"><a href="#hasilNormal" class="fa fa-columns">Normal</a></li>
+						<li><a href="#descriptive" class="fa fa-bar-chart-o">About </a></li>
+						<li><a href="#about" class="fa fa-info-circle">About </a></li>
 						<!-- Example for active item:
 						<li class="cbp-vicurrent"><a href="#" class="icon-pencil">Pencil</a></li>
 						-->
@@ -230,157 +246,7 @@
 			
         </div>
 
-		<script>
-
-			$(document).ready(function(){
-			    $('#header ul li').click(function() {
-			        $(this).siblings('li').removeClass('cbp-vicurrent');
-			        $(this).addClass('cbp-vicurrent');
-			    });
-			});
-
-	        var data = [
-	            [21,23],
-	            [30,21],
-	            [12,45],
-	            [13,44],
-	            [21,23],
-	            [30,21],
-	            [12,45],
-	            [13,44],
-	            [21,23],
-	            [30,21],
-	            [12,45],
-	            [13,44],
-	            [21,23],
-	            [30,21],
-	            [12,45],
-	            [" "," "],
-	            [" "," "]
-	        ];    
-
-	      var $container = $("#dataTable");
-	        $container.handsontable({
-	        data: data,
-	        startRows: 16,
-	        startCols: 2,
-	        minSpareRows: 1,
-	        colWidths: [200, 190], 
-	        rowHeaders: true,
-	        colHeaders: true,
-	      });
-
-
-
-	        
-
-	         function compute(form){
-	          
-	            var hot = $container.handsontable('getInstance');
-	            var dataA = hot.getDataAtCol(0);
-	             dataA=dataA.filter(function(e){return e});
-	            var dataB = hot.getDataAtCol(1);
-	             dataB=dataB.filter(function(e){return e});
-	            var dataGab = dataA.concat(dataB);
-	            var med = Math.median.apply(Math,dataGab);
-	            
-	            var a;
-	            var b;
-	            var c;
-	            var d;
-	            
-	            if(isNaN(dataA[0])){
-	                a = oneOne(dataA, dataA[0]);
-	                b = oneOne(dataB, dataA[0]);
-	                c = zeroOne(dataA, dataA[0]);
-	                d = zeroOne(dataB, dataA[0]);
-	                document.getElementById("grtMed").innerHTML=dataA[0];
-	                document.getElementById("grtMed1").innerHTML=dataA[0];
-	                document.getElementById("lsMed").innerHTML="!"+dataA[0];
-	                document.getElementById("lsMed1").innerHTML="!"+dataA[0];
-
-	                document.getElementById("med").innerHTML="-";
-		            document.getElementById("med1").innerHTML="-";
-
-	            } if (!isNaN(dataA[0])){
-	                a = lebihDari(dataA, med);
-	                b = lebihDari(dataB, med);
-	                c = kurangDari(dataA, med);
-	                d = kurangDari(dataB, med);
-	                document.getElementById("grtMed").innerHTML="> Median";
-	                document.getElementById("grtMed1").innerHTML="> Median";
-	                document.getElementById("lsMed").innerHTML="< Median";
-	                document.getElementById("lsMed1").innerHTML="< Median";
-
-		            document.getElementById("med").innerHTML=med;
-		            document.getElementById("med1").innerHTML=med;   
-	            }
-
-
-
-	            if (document.getElementById('normal').checked) {
-	            	var te = computeNormal(a,b,c,d);
-	            	var z = calc_q(form);
-
-	            	if(te >= z || te <= (z*(-1))){
-		                document.getElementById("conclusionNormal").innerHTML="Tolak H0";
-		            }else{
-		                document.getElementById("conclusionNormal").innerHTML="Gagal Tolak H0";
-		            }
-		            document.getElementById("a1").innerHTML=a;
-		            document.getElementById("b1").innerHTML=b;
-		            document.getElementById("c1").innerHTML=c;
-		            document.getElementById("d1").innerHTML=d;
-
-					var ab = a+b;
-		            var cd = c+d;
-		            var ac = a+c;
-		            var bd = b+d;
-		            var n =a+b+c+d;
-		            document.getElementById("ab1").innerHTML=ab;
-		            document.getElementById("cd1").innerHTML=cd;
-		            document.getElementById("ac1").innerHTML=ac;
-		            document.getElementById("bd1").innerHTML=bd;
-		            document.getElementById("abcd1").innerHTML=n;
-		            
-		            document.getElementById("zTbl").innerHTML=z;
-		            document.getElementById("t").innerHTML=te;
-		            window.location.hash = "hasilNormal";
-        		}
-        		else{
-		            var chiSqr = computeChiSqr(a,b,c,d);
-		            
-		            var chiinv = chisqcalc(form);
-		            
-		            if(chiSqr >= chiinv){
-		                document.getElementById("conclusion").innerHTML="Tolak H0";
-		            }if (chiSqr < chiinv){
-		                document.getElementById("conclusion").innerHTML="Gagal Tolak H0";
-		            }
-			        document.getElementById("a").innerHTML=a;
-		            document.getElementById("b").innerHTML=b;
-		            document.getElementById("c").innerHTML=c;
-		            document.getElementById("d").innerHTML=d;
-		            var ab = a+b;
-		            var cd = c+d;
-		            var ac = a+c;
-		            var bd = b+d;
-		            var n =a+b+c+d;
-		            document.getElementById("ab").innerHTML=ab;
-		            document.getElementById("cd").innerHTML=cd;
-		            document.getElementById("ac").innerHTML=ac;
-		            document.getElementById("bd").innerHTML=bd;
-		            document.getElementById("abcd").innerHTML=n;
-		            
-		            document.getElementById("chiSqrTbl").innerHTML=chiinv;
-		            document.getElementById("chiSqr").innerHTML=chiSqr;
-		            window.location.hash = "hasil";       			
-        		}
-
-
-	        }
-
-	    </script>
+		<script src="function.js"> </script>
 
     	<script src="src/script.js">    </script>
    	 	<script src="src/chisquare.js"></script>
