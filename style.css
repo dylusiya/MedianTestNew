@@ -9,7 +9,7 @@ body {
 }
 
 .panel{
-	min-width: 100%;
+	min-width: 80%;
 	height: 80%;
 	overflow-y: auto;
 	background-color: #fff;
