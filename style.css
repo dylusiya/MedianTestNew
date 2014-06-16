@@ -10,8 +10,9 @@ body {
 
 .panel{
 	min-width: 80%;
-	height: 80%;
+	height: 1000px;
 	overflow-y: auto;
+	overflow-x: hidden;
 	background-color: #fff;
 	z-index: -10;
 	-webkit-transition: opacity .6s ease-in-out;
