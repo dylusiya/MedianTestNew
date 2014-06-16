@@ -69,8 +69,8 @@
 	                b = lebihDari(dataB, med);
 	                c = kurangDari(dataA, med);
 	                d = kurangDari(dataB, med);
-	                grtMed = "> Median";
-	                lsMed = "< Median";
+	                grtMed = "&gt; Median";
+	                lsMed = "&lt; Median";
 	            }
 
 
